@@ -1,25 +1,9 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "time.h"
-#include "windows.h"
 
-int main() {
-    SetConsoleOutputCP(65001);
-    SetConsoleCP(65001);
-
-    int n;
-    int bulls = 0;
-    int cows = 0;
+void generate_secret_number(int* a, int n) {
     int i, j, c;
-
-    srand(time(NULL));
-
-    printf("Введите длину числа (от 2 до 5): ");
-    scanf_s("%d", &n);
-
-    int* a = (int*) malloc(n * sizeof(int));
-    int* b = (int*) malloc(n * sizeof(int));
-
     for (i = 0; i < n; i++) {
         do {
             c = 0;
@@ -38,8 +22,25 @@ int main() {
             }
         } while (c == 1);
     }
+}
 
-    printf("\nКомпьютер загадал: ");
+int main() {
+    int n;
+    int bulls = 0;
+    int cows = 0;
+    int i, j;
+
+    srand(time(NULL));
+
+    printf("Vvedite dlinu chisla (ot 2 do 5): ");
+    scanf_s("%d", &n);
+
+    int* a = (int*)malloc(n * sizeof(int));
+    int* b = (int*)malloc(n * sizeof(int));
+
+    generate_secret_number(a, n);
+
+    printf("\nKompyuter zagadal: ");
     for (i = 0; i < n; i++) printf("%d", a[i]);
     printf("\n");
 
@@ -48,7 +49,7 @@ int main() {
         cows = 0;
         int input;
 
-        printf("Введите вашу попытку (число из %d цифр): ", n);
+        printf("Vvedite vashu popytku (chislo iz %d cifr): ", n);
         scanf_s("%d", &input);
 
         for (i = n - 1; i >= 0; i--) {
@@ -68,10 +69,10 @@ int main() {
                 }
             }
         }
-        printf("Результат: cows = %d, bulls = %d\n\n", cows, bulls);
+        printf("Rezultat: cows = %d, bulls = %d\n\n", cows, bulls);
     }
 
-    printf("Число отгадано.\n");
+    printf("Chislo otgadano.\n");
 
     free(a);
     free(b);
