@@ -2,24 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 
-struct Item {
-    char c[5];
-    char n[50];
-    int p;
-    int d;
-};
-
 int main() {
     SetConsoleCP(65001);
     SetConsoleOutputCP(65001);
 
-    struct Item store[5] = {
-        {"1111", "Игровая мышь", 2500, 10},
-        {"2222", "Механическая клавиатура", 5500, 15},
-        {"3333", "Беспроводные наушники", 3900, 5},
-        {"4444", "Коврик для мыши XL", 1200, 50},
-        {"5555", "Внешний жесткий диск", 6000, 20}
-    };
+    char codes[5][5] = { "1111", "2222", "3333", "4444", "5555" };
+    char names[5][50] = { "Игровая мышь", "Механическая клавиатура", "Беспроводные наушники", "Коврик для мыши XL", "Внешний жесткий диск" };
+    int prices[5] = { 2500, 5500, 3900, 1200, 6000 };
+    int discs[5] = { 10, 15, 5, 50, 20 };
 
     int ck_idx[5] = { 0 };
     int ck_qty[5] = { 0 };
@@ -56,9 +46,9 @@ int main() {
             scanf_s("%s", tmp, (unsigned int)sizeof(tmp));
 
             int found = -1;
-            
+
             for (int i = 0; i < 5; i++) {
-                if (strcmp(store[i].c, tmp) == 0) {
+                if (strcmp(codes[i], tmp) == 0) {
                     found = i;
                     break;
                 }
@@ -72,7 +62,7 @@ int main() {
                 printf("Ошибка: Товар с таким штрих-кодом не найден.\n");
             }
         }
-            break;
+        break;
 
         case 2:
             printf("\n[Запрос описания товара...]\n");
@@ -81,9 +71,9 @@ int main() {
             }
             else {
                 printf("Описание товара:\n");
-                printf("Название: %s\n", store[scan_i].n);
-                printf("Цена за единицу: %d руб.\n", store[scan_i].p);
-                printf("Скидка на товар: %d%%\n", store[scan_i].d);
+                printf("Название: %s\n", names[scan_i]);
+                printf("Цена за единицу: %d руб.\n", prices[scan_i]);
+                printf("Скидка на товар: %d%%\n", discs[scan_i]);
             }
             break;
 
@@ -103,13 +93,13 @@ int main() {
 
                 if (already_in != -1) {
                     ck_qty[already_in]++;
-                    printf("Количество товара '%s' увеличено до %d шт.\n", store[scan_i].n, ck_qty[already_in]);
+                    printf("Количество товара '%s' увеличено до %d шт.\n", names[scan_i], ck_qty[already_in]);
                 }
                 else {
                     ck_idx[ck_n] = scan_i;
                     ck_qty[ck_n] = 1;
                     ck_n++;
-                    printf("Товар '%s' добавлен в чек (1 шт.).\n", store[scan_i].n);
+                    printf("Товар '%s' добавлен в чек (1 шт.).\n", names[scan_i]);
                 }
 
                 scan_i = -1;
@@ -125,10 +115,10 @@ int main() {
                 printf("\n--- ТЕКУЩИЙ ЧЕК ---\n");
                 for (int i = 0; i < ck_n; i++) {
                     int idx = ck_idx[i];
-                    int total_p = store[idx].p * ck_qty[i];
+                    int total_p = prices[idx] * ck_qty[i];
 
                     printf("%s – %d руб. – %d шт. – %d руб.\n",
-                        store[idx].n, store[idx].p, ck_qty[i], total_p);
+                        names[idx], prices[idx], ck_qty[i], total_p);
                 }
                 printf("--------------------\n");
             }
@@ -151,9 +141,9 @@ int main() {
         for (int i = 0; i < ck_n; i++) {
             int idx = ck_idx[i];
 
-            int item_p = store[idx].p;
+            int item_p = prices[idx];
             int item_q = ck_qty[i];
-            int item_d = store[idx].d;
+            int item_d = discs[idx];
 
             int total_item_p = item_p * item_q;
             int item_d_rub = (total_item_p * item_d) / 100;
@@ -162,7 +152,7 @@ int main() {
             sum_disc += item_d_rub;
 
             printf("%s – %d руб. – %d шт. – %d руб.\n",
-                store[idx].n, item_p, item_q, total_item_p);
+                names[idx], item_p, item_q, total_item_p);
         }
 
         total_pay = sum_no_d - sum_disc;
